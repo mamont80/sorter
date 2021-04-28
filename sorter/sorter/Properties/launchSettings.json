@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "gen": {
+      "commandName": "Project",
+      "commandLineArgs": "-sort -input d:\\8\\file_50g"
+    }
+  }
+}
