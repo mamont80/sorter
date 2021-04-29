@@ -48,6 +48,7 @@ namespace gen
 
         private void DoProcess(int size, byte[] buffer, bool isFistBlock, bool endStream)
         {
+            //разбор блока на отдельные строки
             byte[] buf = buffer;
             if (Program.UseCompress)
             {
@@ -101,6 +102,10 @@ namespace gen
 
         public void Pop()
         {
+            //Записи делятся на 2 кучки:
+            //Fetched1 - текущая очередь записей
+            //Fetched2 - следующая порция записей. Её стараемся запросить заранее, в надежде что когда кончится первая, вторая уже будет загружена и разобрана.
+            //Если к моменту когда кончилась первая, вторая ещё не успела загрузиться, тогда ожидаем готовности.
             while (true)
             {
                 if (Fetched1.Count > 0)

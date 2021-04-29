@@ -43,7 +43,7 @@ namespace gen
             Disk = new DiskThread();
             Disk.Run();
 
-            controller = new ChunkController();//буферизирует чтение отдельных чанков
+            controller = new ChunkController();//буферизирует чтение отдельных чанков, поддерживает чанки в сортированном списке
             controller.Disk = Disk;
 
             //файл результата
@@ -57,11 +57,11 @@ namespace gen
                 {
                     lock (controller)
                     {
-                        var lp = controller.GetNextLine();
+                        var lp = controller.GetNextLine();//берем очередную наименьшую строку из наименьшего чанка
                         if (lp == null) break;
                         lstSize = lstSize + lp.Size();
                         lst.Add(lp);
-                        //если накопилось много данных сбрасываем на диск
+                        //если накопилось уже много выходных данных сбрасываем на диск
                         if (lstSize > Program.WriteResultMinSize) ResultFileFlush();
                     }
                 }
